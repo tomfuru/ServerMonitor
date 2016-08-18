@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Line Chart</title>
+    <script src="./lib/js/Chart.bundle.js"></script>
+    <script src="./lib/js/jquery-2.1.3.js"></script>
+    <style>
+    canvas{
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+    <table id="data" border="1" />
+    <br>
+    <br>
+    <button id="update">Update</button>
+    <script>
+  
+function xmlLoad(){
+    $.ajax({  
+        url:'data2.xml',  
+        type:'get',  
+        dataType:'xml',  
+        timeout:1000,  
+        success:parse_xml  
+    });  
+}    
+function parse_xml(xml,status){  
+    if(status!='success')return;  
+    $(xml).find('data').find('server').each(disp);
+}  
+  
+function disp(){
+    var table = document.getElementById('data');
+    
+    var server_name = $(this).attr('name');
+
+    $(this).find('command').each(function() {
+        var command_time = $(this).attr('get_time')
+         $(this).find('feature').each(function() {
+             var feature_name = $(this).attr('name');
+             var feature_data = $(this).text();
+
+             var newtr = table.insertRow(0);
+             var newtd1 = newtr.insertCell(newtr.cells.length);
+             newtd1.appendChild(document.createTextNode(server_name));
+             var newtd2 = newtr.insertCell(newtr.cells.length);
+             newtd2.appendChild(document.createTextNode(command_time));
+             var newtd3 = newtr.insertCell(newtr.cells.length);
+             newtd3.appendChild(document.createTextNode(feature_name));
+             var newtd4 = newtr.insertCell(newtr.cells.length);
+             newtd4.appendChild(document.createTextNode(feature_data));
+         })
+    })
+}  
+    
+$(function(){  
+    xmlLoad();  
+});
+    </script>
+</body>
+
+</html>

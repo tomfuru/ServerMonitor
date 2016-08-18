@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+  <server name="server1">
+    <username>ec2-user</username>
+    <password />
+    <rootPassword />
+    <hostname>ec2-54-238-180-198.ap-northeast-1.compute.amazonaws.com</hostname>
+    <keypath>~/Dropbox/Personal/amazon/amazon_keypair.pem</keypath>
+    <commands>
+      <command name="vmstat">
+        <input_command>vmstat</input_command>
+        <features>
+         <feature name="processes">
+           <extract_command>sed '3!d' | sed -E 's/ +/ /g' | cut -d ' ' -f 2</extract_command>
+         </feature>
+         <feature name="cpu_idle">
+           <extract_command>sed '3!d' | sed -E 's/ +/ /g' | cut -d ' ' -f 16</extract_command>
+         </feature>
+        </features>
+      </command>
+      <command name="free">
+        <input_command>free</input_command>
+        <features>
+          <feature name="memory">
+             <extract_command>grep Mem | sed -E 's/ +/ /g' | cut -d ' ' -f 3</extract_command>
+          </feature>
+        </features>
+      </command>
+    </commands>
+  </server>
+  <server name="server2">
+    <username>ec2-user</username>
+    <password />
+    <rootPassword />
+    <hostname>ec2-54-238-180-198.ap-northeast-1.compute.amazonaws.com</hostname>
+    <keypath>~/Dropbox/Personal/amazon/amazon_keypair.pem</keypath>  
+    <commands>
+      <command name="ls-l2">
+        <input_command>ls -l /</input_command>
+        <features>
+         <feature name="line2">
+           <extract_command>wc -l</extract_command>
+         </feature>
+         <feature name="bytes2">
+           <extract_command>wc -c</extract_command>
+         </feature>
+        </features>
+      </command>
+    </commands>
+  </server>
+</servers>
